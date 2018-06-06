@@ -1,5 +1,8 @@
 package project.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -30,11 +33,32 @@ public class Card {
 
     public String toPicture(){
         return new StringBuilder()
-                .append(" ___ \n|")
-                .append(String.format("%1$-3s", rank.getSymbol()))
-                .append("|\n| ").append(suit.getSymbol()).append(" |\n|")
-                .append(String.format("%1$3s", rank.getSymbol()).replace(" ", "_"))
-                .append("|\n").toString();
+                .append(" ___ \n")
+                .append("|").append(String.format("%1$-3s", rank.getSymbol())).append("|\n")
+                .append("| ").append(suit.getSymbol()).append(" |\n")
+                .append("|").append(String.format("%1$3s", rank.getSymbol()).replace(" ", "_")).append("|\n")
+                .toString();
+    }
+
+    public static String printPicturesInLine(List<Card> cards){
+        if(cards.size() == 0){
+            return "";
+        }
+
+        ArrayList<String[]> lines = new ArrayList<>();
+        for (Card card : cards) {
+            lines.add(card.toPicture().split("\\n"));
+        }
+        StringBuilder pictureList = new StringBuilder();
+        int lineCnt = lines.get(0).length;
+        for(int x = 0; x < lineCnt; x++){
+            for (String[] line : lines) {
+                pictureList.append(line[x]);
+            }
+            pictureList.append("\n");
+        }
+
+        return pictureList.toString();
     }
 
     @Override

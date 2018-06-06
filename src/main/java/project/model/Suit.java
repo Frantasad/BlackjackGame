@@ -5,10 +5,10 @@ package project.model;
  * @author František Holubec
  */
 public enum Suit {
-    Spades("♠"),
-    Hearts("♥"),
-    Diamonds("♦"),
-    Clubs("♣");
+    Spades("S"),
+    Hearts("H"),
+    Diamonds("D"),
+    Clubs("C");
 
     private final String symbol;
 

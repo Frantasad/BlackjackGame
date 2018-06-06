@@ -14,15 +14,23 @@ import java.util.Objects;
  * @author František Holubec
  */
 public class Player implements IPlayer {
+    private static final int INITIAL_CREDIT = 1000;
+    public static final int MINIMAL_BET = 10;
+
     private int id;
     private String name;
     private List<Card> cardsInHand;
     private int points;
 
+    private int bet;
+    private int credit;
+
     public Player(String name) {
         this.id = IDGenerator.getNewId();
         this.name = name;
         this.cardsInHand = new ArrayList<>();
+        this.credit = INITIAL_CREDIT;
+        this.bet = 0;
     }
 
     private int calculatePoints() {
@@ -78,9 +86,7 @@ public class Player implements IPlayer {
     public String toString() {
         StringBuilder builder = new StringBuilder(name);
         builder.append(" (Points: ").append(points).append(")\n");
-        for(Card card : cardsInHand){
-            builder.append(" ").append(card.toPicture()).append("\n");
-        }
+        builder.append(Card.printPicturesInLine(cardsInHand));
         return builder.toString();
     }
 
@@ -95,5 +101,35 @@ public class Player implements IPlayer {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public int getCurrentBet() {
+        return bet;
+    }
+
+    @Override
+    public boolean placeBet(int bet) {
+        if(bet > credit || bet < MINIMAL_BET){
+            return false;
+        }
+        credit -= bet;
+        this.bet = bet;
+        return true;
+    }
+
+    @Override
+    public int getCredit() {
+        return credit;
+    }
+
+    @Override
+    public boolean canPlay(){
+        return credit > MINIMAL_BET;
+    }
+
+    @Override
+    public void addCredit(int amount) {
+        credit += amount;
     }
 }

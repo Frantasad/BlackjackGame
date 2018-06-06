@@ -38,25 +38,56 @@ public class Blackjack implements IBlackjack {
         System.out.println();
         System.out.println("\tGame started");
         printHelp();
+        printCardInfo();
         while(!players.isEmpty()){
             System.out.println("\t\tNew Round");
+            placeBets();
             dealInitCards();
             printAllPlayers();
             turnOfPlayers();
             turnOfDealer();
-            askToContinue();
+            checkForContinue();
         }
     }
 
-    private void askToContinue(){
-        List<IPlayer> leavingIPlayers = new ArrayList<>();
-        for(IPlayer player : players) {
-            System.out.print(player.getName() + ", do you want to continue? (Yes/No): ");
-            if(!AskYesOrNo()){
-                leavingIPlayers.add(player);
+    @Override
+    public void initDeck(){
+        System.out.print("Enter number of card decks to use (max: " + Deck.MAX_DECKS_IN_ONE + "): ");
+        int cnt = READER.nextInt();
+        if(cnt > Deck.MAX_DECKS_IN_ONE){
+            System.out.println("Input over limit, using: " + Deck.MAX_DECKS_IN_ONE);
+        }
+        deck = new Deck(cnt);
+        deck.shuffle();
+    }
+
+    @Override
+    public void initPlayers(){
+        createNewPlayer();
+        while (players.size() < MAX_PLAYERS) {
+            System.out.println("Players: " + players.size() + "/" + MAX_PLAYERS);
+            System.out.print("Add player? (Yes/No): ");
+            if(AskYesOrNo()){
+                createNewPlayer();
+            } else {
+                return;
             }
         }
-        players.removeAll(leavingIPlayers);
+    }
+
+    @Override
+    public void placeBets() {
+        for(IPlayer player : players) {
+            System.out.print(player.getName() + " - credit: " + player.getCredit() + "\n" +
+                    " place bet (min: " + Player.MINIMAL_BET + "): ");
+            int bet = READER.nextInt();
+            while (!player.placeBet(bet)){
+                invalidInput();
+                System.out.print("Place bet (min: " + Player.MINIMAL_BET + "): ");
+                bet = READER.nextInt();
+            }
+            System.out.println("Bet of " + player.getCurrentBet() + " set\n");
+        }
     }
 
     @Override
@@ -71,6 +102,33 @@ public class Blackjack implements IBlackjack {
     }
 
     @Override
+    public void checkForContinue(){
+        List<IPlayer> leavingIPlayers = new ArrayList<>();
+        for(IPlayer player : players) {
+            if(!player.canPlay()){
+                System.out.println(player.getName() + " cannot play anymore.");
+                leavingIPlayers.add(player);
+            } else {
+                System.out.print(player.getName() + ", do you want to continue? (Yes/No): ");
+                if(!AskYesOrNo()){
+                    leavingIPlayers.add(player);
+                }
+            }
+        }
+        players.removeAll(leavingIPlayers);
+    }
+
+    @Override
+    public void returnAllCardsToDeck(){
+        for(IPlayer player : players){
+            player.returnCards();
+        }
+        dealer.returnCards();
+        deck.returnAllCards();
+    }
+
+
+    @Override
     public void printAllPlayers(){
         System.out.println("Players:");
         System.out.println(dealer);
@@ -78,6 +136,8 @@ public class Blackjack implements IBlackjack {
             System.out.println(player);
         }
     }
+
+
 
     private void turnOfDealer(){
         System.out.println("Turn of " + dealer.getName());
@@ -120,25 +180,20 @@ public class Blackjack implements IBlackjack {
         returnAllCardsToDeck();
     }
 
-    @Override
-    public void printHelp(){
+    private void printHelp(){
         System.out.println("Available commands: \n" +
                 " Help: Show printHelp\n" +
                 " Hit: Take another card from the dealer\n" +
                 " Stand: Take no more model\n" +
-                " Surrender: Surrender the round\n" +
-                " Exit: Leave the game after this round\n");
+                " Surrender: Surrender the round\n");
     }
 
-    @Override
-    public void initDeck(){
-        System.out.print("Enter number of card decks to use (max: " + Deck.MAX_DECKS_IN_ONE + "): ");
-        int cnt = READER.nextInt();
-        if(cnt > Deck.MAX_DECKS_IN_ONE){
-            System.out.println("Input over limit, using: " + Deck.MAX_DECKS_IN_ONE);
-        }
-        deck = new Deck(cnt);
-        deck.shuffle();
+    private void printCardInfo(){
+        System.out.println("Card suits: \n" +
+                " S - Spades\n" +
+                " H - Hearts\n" +
+                " D - Diamonds\n" +
+                " C - Clubs\n");
     }
 
     private boolean AskYesOrNo(){
@@ -154,29 +209,6 @@ public class Blackjack implements IBlackjack {
                     break;
             }
         }
-    }
-
-    @Override
-    public void initPlayers(){
-        createNewPlayer();
-        while (players.size() < MAX_PLAYERS) {
-            System.out.println("Players: " + players.size() + "/" + MAX_PLAYERS);
-            System.out.print("Add player? (Yes/No): ");
-            if(AskYesOrNo()){
-                createNewPlayer();
-            } else {
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void returnAllCardsToDeck(){
-        for(IPlayer player : players){
-            player.returnCards();
-        }
-        dealer.returnCards();
-        deck.returnAllCards();
     }
 
     private void createNewPlayer(){

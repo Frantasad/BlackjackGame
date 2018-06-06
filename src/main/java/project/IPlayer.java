@@ -19,4 +19,14 @@ public interface IPlayer {
     void takeCard(Card card);
 
     List<Card> returnCards();
+
+    int getCurrentBet();
+
+    boolean placeBet(int bet);
+
+    int getCredit();
+
+    boolean canPlay();
+
+    void addCredit(int amount);
 }
