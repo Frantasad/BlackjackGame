@@ -1,25 +1,22 @@
 package project.model;
 
+/**
+ * Suit of the card
+ * @author František Holubec
+ */
 public enum Suit {
-    Spades("Spades", "♠"),
-    Hearts("Hearts", "♥"),
-    Diamonds("Diamonds", "♦"),
-    Clubs("Clubs", "♣");
+    Spades("♠"),
+    Hearts("♥"),
+    Diamonds("♦"),
+    Clubs("♣");
 
-    private final String name;
     private final String symbol;
 
-    Suit(String name, String symbol) {
-        this.name = name;
+    Suit(String symbol) {
         this.symbol = symbol;
     }
 
     public String getSymbol() {
         return symbol;
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

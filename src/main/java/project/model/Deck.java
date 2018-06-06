@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ * @author František Holubec
+ */
 public class Deck {
     public static final int MAX_DECKS_IN_ONE = 8;
 

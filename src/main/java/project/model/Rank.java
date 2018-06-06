@@ -1,5 +1,9 @@
 package project.model;
 
+/**
+ * Rank of the card
+ * @author František Holubec
+ */
 public enum Rank {
     Two("2", 2),
     Three("3", 3),

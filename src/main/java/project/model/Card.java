@@ -2,6 +2,10 @@ package project.model;
 
 import java.util.Objects;
 
+/**
+ *
+ * @author František Holubec
+ */
 public class Card {
     private Rank rank;
     private Suit suit;
@@ -27,9 +31,9 @@ public class Card {
     public String toPicture(){
         return new StringBuilder()
                 .append(" ___ \n|")
-                .append(String.format("%1$-3s", rank))
+                .append(String.format("%1$-3s", rank.getSymbol()))
                 .append("|\n| ").append(suit.getSymbol()).append(" |\n|")
-                .append(String.format("%1$3s", rank).replace(" ", "_"))
+                .append(String.format("%1$3s", rank.getSymbol()).replace(" ", "_"))
                 .append("|\n").toString();
     }
 
