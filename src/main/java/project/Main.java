@@ -1,21 +1,10 @@
 package project;
 
-import java.awt.peer.SystemTrayPeer;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import project.Impl.Blackjack;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        System.out.println(
-                "╔───┐\n" +
-                        "║9  │\n" +
-                        "│   │\n" +
-                        "│ ♥ │\n" +
-                        "│   │\n" +
-                        "│  9│\n" +
-                        "└───┘\n");
-
-        System.in.read();
+    public static void main(String[] args){
+        IBlackjack game = new Blackjack();
+        game.start();
     }
 }
