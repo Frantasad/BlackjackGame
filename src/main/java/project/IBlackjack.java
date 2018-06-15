@@ -1,7 +1,7 @@
 package project;
 
 /**
- *
+ * Interface for blackjack game
  * @author František Holubec
  */
 public interface IBlackjack {
@@ -22,6 +22,8 @@ public interface IBlackjack {
     void printAllPlayers();
 
     void placeBets();
+
+    void checkResults();
 
     void checkForContinue();
 }
