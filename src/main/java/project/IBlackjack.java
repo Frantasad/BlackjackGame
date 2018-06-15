@@ -1,10 +1,11 @@
 package project;
 
 /**
- *
+ * Interface for blackjack game
  * @author František Holubec
  */
 public interface IBlackjack {
+
     /**
      * Start new game
      */
@@ -18,7 +19,11 @@ public interface IBlackjack {
 
     void returnAllCardsToDeck();
 
-    void printHelp();
-
     void printAllPlayers();
+
+    void placeBets();
+
+    void checkResults();
+
+    void checkForContinue();
 }

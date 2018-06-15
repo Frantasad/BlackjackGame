@@ -1,28 +1,36 @@
 package project.Impl;
 
-import project.helpers.IDGenerator;
-import project.model.Card;
-import project.model.Rank;
+import project.Constants;
+import project.models.cards.Card;
+import project.models.cards.Rank;
 import project.IPlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- *
+ * Implementation of player that can play blackjack
  * @author František Holubec
  */
 public class Player implements IPlayer {
-    private int id;
+
+
     private String name;
     private List<Card> cardsInHand;
     private int points;
 
+    private int bet;
+    private int credit;
+
+    private boolean surrendered;
+
     public Player(String name) {
-        this.id = IDGenerator.getNewId();
         this.name = name;
-        this.cardsInHand = new ArrayList<>();
+        cardsInHand = new ArrayList<>();
+        credit = Constants.INITIAL_CREDIT;
+        bet = 0;
+        surrendered = false;
     }
 
     private int calculatePoints() {
@@ -36,7 +44,7 @@ public class Player implements IPlayer {
             }
         }
         for(Card ace : aces){
-            if (points + ace.getValue() > Blackjack.BLACKJACK_VALUE){
+            if (points + ace.getValue() > Constants.BLACKJACK_VALUE){
                 points += 1;
             } else {
                 points += ace.getValue();
@@ -47,7 +55,33 @@ public class Player implements IPlayer {
 
     @Override
     public boolean busted(){
-        return points > Blackjack.BLACKJACK_VALUE;
+        return points > Constants.BLACKJACK_VALUE;
+    }
+
+    @Override
+    public boolean hasBlackjack() {
+        List<Integer> ranksInHand = new ArrayList<>();
+        for (Card card : cardsInHand) {
+            ranksInHand.add(card.getValue());
+        }
+        return cardsInHand.size() == 2 && ranksInHand.contains(11) && ranksInHand.contains(10);
+    }
+
+    @Override
+    public boolean surrendered() {
+        return surrendered;
+    }
+
+    @Override
+    public void surrender() {
+        surrendered = true;
+    }
+
+    @Override
+    public void finishRound(double winRatio) {
+        credit += bet * winRatio;
+        bet = 0;
+        surrendered = false;
     }
 
     @Override
@@ -75,25 +109,37 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder(name);
-        builder.append(" (Points: ").append(points).append(")\n");
-        for(Card card : cardsInHand){
-            builder.append(" ").append(card.toPicture()).append("\n");
+    public List<Card> getCardsInHand() {
+        return Collections.unmodifiableList(cardsInHand);
+    }
+
+    @Override
+    public int getCurrentBet() {
+        return bet;
+    }
+
+    @Override
+    public boolean placeBet(int bet) {
+        if(bet % Constants.BET_STEP != 0|| bet > credit || bet < Constants.MINIMAL_BET){
+            return false;
         }
-        return builder.toString();
+        credit -= bet;
+        this.bet = bet;
+        return true;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return id == player.id;
+    public int getCredit() {
+        return credit;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public boolean canPlaceBet(){
+        return credit > Constants.MINIMAL_BET;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Points: " + points + ")\n" + Card.printPicturesInLine(cardsInHand);
     }
 }
