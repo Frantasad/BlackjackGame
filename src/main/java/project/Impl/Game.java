@@ -109,6 +109,7 @@ public class Game implements IGame {
             System.out.println("Turn of " + player.getName());
             System.out.println(player);
             boolean playing = true;
+            boolean firstRound = true;
             while(playing){
                 if(player.getPoints() == Constants.BLACKJACK_VALUE){
                     break;
@@ -130,13 +131,18 @@ public class Game implements IGame {
                         playing = false;
                         break;
                     case Surrender:
-                        player.surrender();
-                        playing = false;
+                        if(firstRound){
+                            player.surrender();
+                            playing = false;
+                            break;
+                        }
+                        ConsoleHelpers.invalidInput();
                         break;
                     default:
                         ConsoleHelpers.invalidInput();
                         break;
                 }
+                firstRound = false;
             }
             System.out.println();
         }
