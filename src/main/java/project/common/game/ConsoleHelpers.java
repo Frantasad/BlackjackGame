@@ -1,9 +1,10 @@
 package project.common.game;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleHelpers {
-    public static final Scanner READER = new Scanner(System.in);
+    private static final Scanner READER = new Scanner(System.in);
 
     public static void printTitle(){
         System.out.println("\t\t.-----------.");
@@ -28,9 +29,9 @@ public class ConsoleHelpers {
     }
 
     public static boolean askYesOrNo(String text){
-        System.out.print(text + " (Yes/No): ");
         while(true){
-            String answer = READER.next().toLowerCase();
+            System.out.print(text + " (Yes/No): ");
+            String answer = READER.nextLine().toLowerCase();
             switch (answer) {
                 case "yes":
                     return true;
@@ -41,6 +42,52 @@ public class ConsoleHelpers {
                     break;
             }
         }
+    }
+
+    public static <E extends Enum<E>> E askForEnum(String text, Class<E> enumClass) {
+        while(true){
+            System.out.print(text + ": ");
+            String answer = READER.nextLine().toLowerCase();
+            for(E type : enumClass.getEnumConstants()){
+                if(type.toString().toLowerCase().equals(answer)){
+                    return type;
+                }
+            }
+            invalidInput();
+        }
+    }
+
+    public static int askForNumber(String text, int min, int max){
+        while(true){
+            System.out.print(text + " (min: " + min + ", max: " + max + "): ");
+            int answer;
+            try{
+                answer = READER.nextInt();
+                READER.nextLine();
+            } catch (InputMismatchException e){
+                invalidInput();
+                READER.nextLine();
+                continue;
+            }
+            if(answer < min || answer > max){
+                invalidInput();
+                continue;
+            }
+            return answer;
+        }
+    }
+
+    public static String askForText(String text, int maxLen){
+        while(true){
+            System.out.print(text + ": ");
+            String answer = READER.nextLine();
+            if(answer.length() > maxLen){
+                invalidInput();
+                continue;
+            }
+            return answer;
+        }
+
     }
 
     public static void invalidInput(){

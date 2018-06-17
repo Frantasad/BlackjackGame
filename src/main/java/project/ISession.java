@@ -6,6 +6,9 @@ package project;
  */
 public interface ISession {
 
+    /**
+     * Start the session of games
+     */
     void start();
 
 }

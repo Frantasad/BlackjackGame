@@ -7,8 +7,10 @@ package project.common.game;
 public class Constants {
     public static final int BLACKJACK_VALUE = 21;
     public static final int MAX_PLAYERS = 6;
+    public static final int MAX_DECKS_IN_ONE = 8;
 
     public static final int DEALERS_HIT_LIMIT = 17;
+    public static final int MAX_PLAYERS_NAME_LENGTH = 20;
 
     public static final int INITIAL_CREDIT = 1000;
     public static final int MINIMAL_BET = 10;
