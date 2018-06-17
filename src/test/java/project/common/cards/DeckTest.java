@@ -26,7 +26,6 @@ public class DeckTest {
 
     @Test
     public void returnAllCards() {
-        List<Card> cardsBeforeRemoving = new ArrayList<>(deck.getCards());
         Card a = deck.getTopCard();
         Card b = deck.getTopCard();
         assertThat(deck.getCards()).doesNotContain(a ,b);

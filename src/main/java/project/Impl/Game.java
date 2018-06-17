@@ -1,5 +1,6 @@
 package project.Impl;
 
+import project.common.game.Command;
 import project.common.game.ConsoleHelpers;
 import project.common.game.Constants;
 import project.IGame;
@@ -8,16 +9,12 @@ import project.IPlayer;
 import project.common.game.GameResult;
 
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Implementation of blackjack game
  * @author František Holubec
  */
 public class Game implements IGame {
-
-    private static final Scanner READER = new Scanner(System.in);
-
     private IPlayer dealer;
     private List<IPlayer> players;
     private Deck deck;
@@ -45,12 +42,11 @@ public class Game implements IGame {
     private void placeBets() {
         for(IPlayer player : players){
             System.out.println(player.getName() + " - credit: " + player.getCredit());
-            System.out.print("Place bet (only factors of " + Constants.BET_STEP + ", min: " + Constants.MINIMAL_BET + "): ");
-            int bet = READER.nextInt();
+            String call = "Place bet (only factors of " + Constants.BET_STEP;
+            int bet = ConsoleHelpers.askForNumber(call, Constants.MINIMAL_BET, player.getCredit());
             while (!player.placeBet(bet)){
                 ConsoleHelpers.invalidInput();
-                System.out.print("Place valid bet: ");
-                bet = READER.nextInt();
+                bet = ConsoleHelpers.askForNumber(call, Constants.MINIMAL_BET, player.getCredit());
             }
             System.out.println("Bet of " + player.getCurrentBet() + " has been set\n");
         }
@@ -113,17 +109,17 @@ public class Game implements IGame {
             System.out.println("Turn of " + player.getName());
             System.out.println(player);
             boolean playing = true;
+            boolean firstRound = true;
             while(playing){
                 if(player.getPoints() == Constants.BLACKJACK_VALUE){
                     break;
                 }
-                System.out.print("Enter command: ");
-                String command = READER.next().toLowerCase();
+                Command command = ConsoleHelpers.askForEnum("Enter command", Command.class);
                 switch (command){
-                    case "printHelp":
+                    case Help:
                         ConsoleHelpers. printHelp();
                         break;
-                    case "hit":
+                    case Hit:
                         player.takeCard(deck.getTopCard());
                         if(player.busted()){
                             playing = false;
@@ -131,23 +127,28 @@ public class Game implements IGame {
                         }
                         System.out.println(player);
                         break;
-                    case "stand":
+                    case Stand:
                         playing = false;
                         break;
-                    case "surrender":
-                        player.surrender();
-                        playing = false;
+                    case Surrender:
+                        if(firstRound){
+                            player.surrender();
+                            playing = false;
+                            break;
+                        }
+                        ConsoleHelpers.invalidInput();
                         break;
                     default:
                         ConsoleHelpers.invalidInput();
                         break;
                 }
+                firstRound = false;
             }
             System.out.println();
         }
     }
 
-    public static GameResult getResult(IPlayer player, IPlayer dealer){
+    private static GameResult getResult(IPlayer player, IPlayer dealer){
         if(player.surrendered()){
             return GameResult.Surrendered;
         }else if (player.busted() || (player.getPoints() < dealer.getPoints() && !dealer.busted())){

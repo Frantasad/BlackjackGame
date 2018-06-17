@@ -1,5 +1,7 @@
 package project.common.cards;
 
+import project.common.game.Constants;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class Deck {
 
-    public static final int MAX_DECKS_IN_ONE = 8;
+
     private LinkedList<Card> cards;
     private List<Card> removedCards;
 
@@ -29,7 +31,7 @@ public class Deck {
                 newCards.add(new Card(rank, suit));
             }
         }
-        cnt = cnt > MAX_DECKS_IN_ONE ? MAX_DECKS_IN_ONE : cnt;
+        cnt = cnt > Constants.MAX_DECKS_IN_ONE ? Constants.MAX_DECKS_IN_ONE : cnt;
 
         for(int i = 0; i < cnt; i++){
             cards.addAll(newCards);

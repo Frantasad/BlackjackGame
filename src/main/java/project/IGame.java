@@ -6,5 +6,8 @@ package project;
  */
 public interface IGame {
 
+    /**
+     * Start the game
+     */
     void play();
 }

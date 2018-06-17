@@ -49,17 +49,15 @@ public class Session implements ISession {
     }
 
     private static Deck initDeck(){
-        System.out.print("Enter number of card decks to use (max: " + Deck.MAX_DECKS_IN_ONE + "): ");
-        int cnt = ConsoleHelpers.READER.nextInt();
-        if(cnt > Deck.MAX_DECKS_IN_ONE){
-            System.out.println("Input over limit, using: " + Deck.MAX_DECKS_IN_ONE);
+        int cnt = ConsoleHelpers.askForNumber("Enter number of card decks to use" ,1, Constants.MAX_DECKS_IN_ONE);
+        if(cnt > Constants.MAX_DECKS_IN_ONE){
+            System.out.println("Input over limit, using: " + Constants.MAX_DECKS_IN_ONE);
         }
         Deck deck = new Deck(cnt);
         deck.shuffle();
         System.out.println();
         return deck;
     }
-
 
     private static List<IPlayer> initPlayers(){
         List<IPlayer> players = new ArrayList<>();
@@ -77,11 +75,9 @@ public class Session implements ISession {
     }
 
     private static IPlayer createNewPlayer(){
-        System.out.print("Enter name: ");
-        String name = ConsoleHelpers.READER.next();
+        String name = ConsoleHelpers.askForText("Enter name", Constants.MAX_PLAYERS_NAME_LENGTH);
         return new Player(name);
     }
-
 
     private void checkForContinue(){
         List<IPlayer> leavingIPlayers = new ArrayList<>();
