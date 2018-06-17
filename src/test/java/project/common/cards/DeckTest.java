@@ -1,4 +1,4 @@
-package project.models.cards;
+package project.common.cards;
 
 import org.junit.Before;
 import org.junit.Test;

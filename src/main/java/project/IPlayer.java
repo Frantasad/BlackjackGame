@@ -1,7 +1,6 @@
 package project;
 
-import project.models.cards.Card;
-import project.models.game.GameResult;
+import project.common.cards.Card;
 
 import java.util.List;
 
@@ -49,8 +48,8 @@ public interface IPlayer {
     boolean busted();
 
     /**
-     * Check if player has Blackjack (Ace and second card of value 10)
-     * @return True if player has Blackjack, False otherwise
+     * Check if player has Game (Ace and second card of value 10)
+     * @return True if player has Game, False otherwise
      */
     boolean hasBlackjack();
 

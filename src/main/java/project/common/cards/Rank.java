@@ -1,4 +1,4 @@
-package project.models.cards;
+package project.common.cards;
 
 /**
  * Rank of the card
