@@ -1,14 +1,15 @@
 package project;
 
-import project.Impl.Blackjack;
+import project.Impl.Game;
+import project.Impl.Session;
 
 /**
- * Run and play Blackjack
+ * Run and play Game
  * @author František Holubec
  */
 public class Main {
     public static void main(String[] args){
-        IBlackjack game = new Blackjack();
-        game.start();
+        ISession session = new Session();
+        session.start();
     }
 }

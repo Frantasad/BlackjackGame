@@ -1,4 +1,4 @@
-package project;
+package project.common.game;
 
 /**
  * All constants used in the game

@@ -1,4 +1,4 @@
-package project.models.game;
+package project.common.game;
 
 /**
  * Possible results of one blackjack game

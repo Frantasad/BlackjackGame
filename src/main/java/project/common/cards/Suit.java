@@ -1,4 +1,4 @@
-package project.models.cards;
+package project.common.cards;
 
 /**
  * Suit of the card

@@ -1,8 +1,8 @@
 package project.Impl;
 
-import project.Constants;
-import project.models.cards.Card;
-import project.models.cards.Rank;
+import project.common.game.Constants;
+import project.common.cards.Card;
+import project.common.cards.Rank;
 import project.IPlayer;
 
 import java.util.ArrayList;

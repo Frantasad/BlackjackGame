@@ -2,12 +2,12 @@ package project.Impl;
 
 import org.junit.Before;
 import org.junit.Test;
-import project.Constants;
+import project.common.game.Constants;
 import project.IPlayer;
-import project.models.cards.Card;
-import project.models.cards.Rank;
-import project.models.cards.Suit;
-import project.models.game.GameResult;
+import project.common.cards.Card;
+import project.common.cards.Rank;
+import project.common.cards.Suit;
+import project.common.game.GameResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
